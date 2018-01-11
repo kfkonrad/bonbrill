@@ -29,6 +29,10 @@
 % There is a first package option: nocustomfont
 % nocustomfont suppresses loading said fonts.
 
+%% Version 1.1
+% Added option chapterpagenumber: adds page numbers to pages with 'empty' header
+% layout, such as chapter beginnings
+
 \NeedsTeXFormat{LaTeX2e}[1994/06/01]
 \def\bon@brillsty@version{1.0}
 \ProvidesPackage{bonbrill}%
@@ -38,6 +42,12 @@
 \@bon@brill@customfonttrue
 \DeclareOption{nocustomfont}{
   \@bon@brill@customfontfalse
+}
+
+\newif\if@bon@brill@chapterpagenumber
+\@bon@brill@chapterpagenumberfalse
+\DeclareOption{chapterpagenumber}{
+  \@bon@brill@chapterpagenumbertrue
 }
 
 \ProcessOptions\relax
@@ -64,11 +74,20 @@
 \renewcommand{\chaptermark}[1]{\markboth{#1}{}}
 \renewcommand{\sectionmark}[1]{\markright{#1}}
 
-\ohead[]{\normalfont \small \thepage}
+\if@bon@brill@chapterpagenumber
+  \ohead[\normalfont \small \thepage]{\normalfont \small \thepage}
+\else
+  \ohead[]{\normalfont \small \thepage}
+\fi
+
 \lohead[]{\normalfont \small \leftmark}
 \rehead[]{\normalfont \small \rightmark}
 \chead[]{}
 \cfoot[]{}
+\lofoot[]{}
+\lefoot[]{}
+\rofoot[]{}
+\refoot[]{}
 
 \newlength{\Blen}
 \settoheight{\Blen}{$\Box$}
